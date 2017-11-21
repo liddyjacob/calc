@@ -9,9 +9,9 @@ struct Add;
 
 
 struct Expr { 
-	virtual ~Expr() = 0;
+	virtual ~Expr() {}
 	virtual Expr* clone() const = 0;
-	virtual void print(std::ostream& os) = 0;
+	virtual void print(std::ostream& os) const = 0;
 	virtual int eval() = 0;
 };
 
@@ -21,7 +21,7 @@ struct Int : Expr{
 		:val(v)
 	{ }
 
-	void print(std::ostream& os) override{
+	void print(std::ostream& os) const override{
 		os << val;
 	}
 
@@ -37,7 +37,7 @@ struct Binary : Expr {
 		: e1(e1), e2(e2)
 	{ }
 	
-	~Binary() {
+	~Binary() override{
 		delete e1;
 		delete e2;
 	}
@@ -48,7 +48,7 @@ struct Binary : Expr {
 struct Add : Binary {
 	using Binary::Binary;
 
-	void print(std::ostream& os) override{
+	void print(std::ostream& os) const override{
 		os << '(';
 		e1->print(os);
 		os << ") + (";
@@ -69,7 +69,7 @@ struct Add : Binary {
 struct Sub : Binary {
 	using Binary::Binary;
 
-	void print(std::ostream& os) override{
+	void print(std::ostream& os) const override{
 		os << '(';
 		e1->print(os);
 		os << ") - (";
@@ -89,7 +89,7 @@ struct Sub : Binary {
 struct Mul : Binary {
 	using Binary::Binary;
 
-	void print(std::ostream& os) override{
+	void print(std::ostream& os) const override{
 		os << '(';
 		e1->print(os);
 		os << ") * (";
@@ -109,7 +109,7 @@ struct Mul : Binary {
 struct Div : Binary {
 	using Binary::Binary;
 
-	void print(std::ostream& os) override{
+	void print(std::ostream& os) const override{
 		os << '(';
 		e1->print(os);
 		os << ") / (";
