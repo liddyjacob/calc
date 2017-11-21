@@ -1,5 +1,7 @@
 //Virtual implementation of calculator function - 
 
+#include <cassert>
+
 struct Expr;
 struct Int;
 struct Mult;
@@ -43,7 +45,6 @@ struct Binary : Expr {
 	Expr* e1;
 	Expr* e2;
 };
-
 struct Add : Binary {
 	using Binary::Binary;
 
@@ -61,6 +62,69 @@ struct Add : Binary {
 
 	int eval() override {
 		return e1->eval() + e2->eval();
+	}
+
+};
+
+struct Sub : Binary {
+	using Binary::Binary;
+
+	void print(std::ostream& os) override{
+		os << '(';
+		e1->print(os);
+		os << ") - (";
+		e2->print(os);
+		os << ')';
+	}
+
+	Sub* clone() const override{
+		return new Sub(*this);
+	}
+
+	int eval() override {
+		return e1->eval() - e2->eval();
+	}
+
+};
+struct Mul : Binary {
+	using Binary::Binary;
+
+	void print(std::ostream& os) override{
+		os << '(';
+		e1->print(os);
+		os << ") * (";
+		e2->print(os);
+		os << ')';
+	}
+
+	Mul* clone() const override{
+		return new Mul(*this);
+	}
+
+	int eval() override {
+		return e1->eval() * e2->eval();
+	}
+
+};
+struct Div : Binary {
+	using Binary::Binary;
+
+	void print(std::ostream& os) override{
+		os << '(';
+		e1->print(os);
+		os << ") / (";
+		e2->print(os);
+		os << ')';
+	}
+
+	Div* clone() const override{
+		return new Div(*this);
+	}
+
+	int eval() override {
+		int eval2 = e2->eval();
+		assert(eval2 != 0);
+		return e1->eval() / eval2;
 	}
 
 };
