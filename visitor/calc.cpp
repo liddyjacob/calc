@@ -1,22 +1,109 @@
 
 #include "calc.hpp"
+struct EvalVisitor : Visitor
+{
+	int ret;
 
-/*
-
-	Idea: eval is piecewise:
-
-		             / e if e is int
-		             | eval(e.e1) + eval(e.e2) if e is add
-		eval(*e) =  {  eval(e.e1) - eval(e.e2) if e is sub
-		             | .
-		             \ .
-  'v
-*/
-
-int eval(Expr* e){
-	match(e){
-		case Int* n:
-		case Add* a:
-		case Sub* s:
+	void visit(Int* e) override {
+		ret = e->val;
 	}
-}
+
+	void visit(Add* e) override {
+		EvalVisitor v1;
+		e->e1->accept(v1);
+
+		EvalVisitor v2;
+		e->e2->accept(v2);
+
+		ret = v1.ret + v2.ret;
+	
+	}
+
+	void visit(Div* e) override {
+		EvalVisitor v1;
+		e->e1->accept(v1);
+
+		EvalVisitor v2;
+		e->e2->accept(v2);
+
+		assert(v2.ret != 0);
+
+		ret = v1.ret / v2.ret;	
+	}
+
+	void visit(Mul* e) override {
+		EvalVisitor v1;
+		e->e1->accept(v1);
+
+		EvalVisitor v2;
+		e->e2->accept(v2);
+
+		ret = v1.ret * v2.ret;	
+	}
+
+
+	void visit(Sub* e) override {
+		EvalVisitor v1;
+		e->e1->accept(v1);
+
+		EvalVisitor v2;
+		e->e2->accept(v2);
+
+		ret = v1.ret - v2.ret;	
+	}
+};
+
+struct PrintVisitor : Visitor
+{
+	int ret;
+
+	void visit(Int* e) override {
+		ret = e->val;
+	}
+
+	void visit(Add* e) override {
+		EvalVisitor v1;
+		e->e1->accept(v1);
+
+		EvalVisitor v2;
+		e->e2->accept(v2);
+
+		ret = v1.ret + v2.ret;
+	
+	}
+
+	void visit(Div* e) override {
+		EvalVisitor v1;
+		e->e1->accept(v1);
+
+		EvalVisitor v2;
+		e->e2->accept(v2);
+
+		assert(v2.ret != 0);
+
+		ret = v1.ret / v2.ret;	
+	}
+
+	void visit(Mul* e) override {
+		EvalVisitor v1;
+		e->e1->accept(v1);
+
+		EvalVisitor v2;
+		e->e2->accept(v2);
+
+		ret = v1.ret * v2.ret;	
+	}
+
+
+	void visit(Sub* e) override {
+		EvalVisitor v1;
+		e->e1->accept(v1);
+
+		EvalVisitor v2;
+		e->e2->accept(v2);
+
+		ret = v1.ret - v2.ret;	
+	}
+};
+
+
