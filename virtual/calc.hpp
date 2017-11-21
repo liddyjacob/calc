@@ -8,10 +8,10 @@ struct Add;
 
 struct Expr { 
 	virtual ~Expr() = 0;
-	virtual Expr* clone() = 0;
+	virtual Expr* clone() const = 0;
 	virtual void print(std::ostream& os) = 0;
 	virtual int eval() = 0;
-}
+};
 
 
 struct Int : Expr{
@@ -23,12 +23,12 @@ struct Int : Expr{
 		os << val;
 	}
 
-	Int* clone() {return new Int(*this);}
+	Int* clone() const override {return new Int(*this);}
 
 	int eval() override {return val;}
 
 	int val;
-}
+};
 
 struct Binary : Expr {
 	Binary(Expr* e1, Expr* e2)
@@ -45,7 +45,7 @@ struct Binary : Expr {
 };
 
 struct Add : Binary {
-	using Binary::Binary();
+	using Binary::Binary;
 
 	void print(std::ostream& os) override{
 		os << '(';
@@ -60,7 +60,7 @@ struct Add : Binary {
 	}
 
 	int eval() override {
-		return e1->evaluate() + e2->evaluate();
+		return e1->eval() + e2->eval();
 	}
 
 };
