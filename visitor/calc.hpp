@@ -10,6 +10,8 @@ struct Visitor
 	virtual void visit(Int* e) = 0;
 	virtual void visit(Add* e) = 0;
 	virtual void visit(Sub* e) = 0;
+	virtual void visit(Mul* e) = 0;
+	virtual void visit(Div* e) = 0;
 }
 
 struct EvalVisitor : Visitor
@@ -31,6 +33,29 @@ struct EvalVisitor : Visitor
 	
 	}
 
+	void visit(Div* e) override {
+		EvalVisitor v1;
+		e->e1->accept(v1);
+
+		EvalVisitor v2;
+		e->e2->accept(v2);
+
+		assert(v2.ret != 0);
+
+		ret = v1.ret / v2.ret;	
+	}
+
+	void visit(Mul* e) override {
+		EvalVisitor v1;
+		e->e1->accept(v1);
+
+		EvalVisitor v2;
+		e->e2->accept(v2);
+
+		ret = v1.ret * v2.ret;	
+	}
+
+
 	void visit(Sub* e) override {
 		EvalVisitor v1;
 		e->e1->accept(v1);
@@ -40,9 +65,61 @@ struct EvalVisitor : Visitor
 
 		ret = v1.ret - v2.ret;	
 	}
-
-
 }
+
+struct PrintVisitor : Visitor
+{
+	int ret;
+
+	void visit(Int* e) override {
+		ret = e->val;
+	}
+
+	void visit(Add* e) override {
+		EvalVisitor v1;
+		e->e1->accept(v1);
+
+		EvalVisitor v2;
+		e->e2->accept(v2);
+
+		ret = v1.ret + v2.ret;
+	
+	}
+
+	void visit(Div* e) override {
+		EvalVisitor v1;
+		e->e1->accept(v1);
+
+		EvalVisitor v2;
+		e->e2->accept(v2);
+
+		assert(v2.ret != 0);
+
+		ret = v1.ret / v2.ret;	
+	}
+
+	void visit(Mul* e) override {
+		EvalVisitor v1;
+		e->e1->accept(v1);
+
+		EvalVisitor v2;
+		e->e2->accept(v2);
+
+		ret = v1.ret * v2.ret;	
+	}
+
+
+	void visit(Sub* e) override {
+		EvalVisitor v1;
+		e->e1->accept(v1);
+
+		EvalVisitor v2;
+		e->e2->accept(v2);
+
+		ret = v1.ret - v2.ret;	
+	}
+}
+
 
 
 struct Expr{
@@ -66,9 +143,9 @@ struct Int : Expr
 };
 
 
-struct Binary: Expr
+struct Binary : Expr
 {
-
+	Binary()
 
 	virtual void accept(Visitor& v) =0;
 };
