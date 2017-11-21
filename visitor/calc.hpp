@@ -123,8 +123,9 @@ struct PrintVisitor : Visitor
 
 
 struct Expr{
-
-	virtual ~Expr() = default;
+	virtual ~Expr() = { }
+	virtual void accept(Visitor& v) = 0;
+	virtual Expr* clone() = 0;
 };
 
 struct Int : Expr
@@ -139,27 +140,88 @@ struct Int : Expr
 
 	void accept(Visitor& v) {v.visit(this);}
 
+	Int* clone() override{
+		return new Int(v);
+	}
+
 	int val;
 };
 
 
 struct Binary : Expr
 {
-	Binary()
+	Binary(Expr e1, Expr e2)
+		:e1(e1), e2(e2)
+	{ }
 
-	virtual void accept(Visitor& v) =0;
+	~Binary() override{
+		delete e1;
+		delete e2;
+	}
+
+	Expr* e1;
+	Expr* e2;
 };
+
 
 
 
 struct Add : Binary{
 	using Binary::Binary;
 
-	void 
+	void accept(Visitor& v) override{
+		v.visit(this);
+	}
+
+
+	Add* clone() override{
+		return new Add(*this);
+	}
 
 };
 
 struct Sub : Binary{
-	using Binary::Binary();
+	using Binary::Binary;
+
+	void accept(Visitor& v) override{
+		v.visit(this);
+	}
+
+
+	Sub* clone() override{
+		return new Sub(*this);
+	}
 
 };
+
+
+struct Mul : Binary{
+	using Binary::Binary;
+
+	void accept(Visitor& v) override{
+		v.visit(this);
+	}
+
+
+	Mul* clone() override{
+		return new Mul(*this);
+	}
+
+};
+
+
+struct Div : Binary{
+	using Binary::Binary;
+
+	void accept(Visitor& v) override{
+		v.visit(this);
+	}
+
+
+	Div* clone() override{
+		return new Div(*this);
+	}
+
+};
+
+
