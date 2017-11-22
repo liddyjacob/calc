@@ -1,4 +1,7 @@
 
+#include <cassert>
+#include <iostream>
+
 struct Expr;
 struct Int;
 struct Add;
@@ -6,7 +9,11 @@ struct Sub;
 struct Mul;
 struct Div;
 
-#include <cassert>
+struct EvalVisitor;
+struct PrintVisitor;
+int eval(Expr*);
+std::ostream& operator<<(std::ostream& os, Expr* e);
+
 
 struct Visitor
 {

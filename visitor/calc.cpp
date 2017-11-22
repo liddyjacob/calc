@@ -74,14 +74,14 @@ struct PrintVisitor : Visitor
 		PrintVisitor v1;
 		e->e1->accept(v1);
 
-		ostr << v1.ostr.rdbuf();
+		ostr << v1.ostr.str();
 
 		ostr << ") + (";
 
 		PrintVisitor v2;
 		e->e2->accept(v2);
 
-		ostr << v2.ostr.rdbuf();
+		ostr << v2.ostr.str();
 
 
 		ostr << ")";
@@ -94,7 +94,7 @@ struct PrintVisitor : Visitor
 		PrintVisitor v1;
 		e->e1->accept(v1);
 
-		ostr << v1.ostr.rdbuf();
+		ostr << v1.ostr.str();
 
 
 		ostr << ") / (";
@@ -102,7 +102,7 @@ struct PrintVisitor : Visitor
 		PrintVisitor v2;
 		e->e2->accept(v2);
 
-		ostr << v2.ostr.rdbuf();
+		ostr << v2.ostr.str();
 
 
 		ostr << ")";
@@ -115,7 +115,7 @@ struct PrintVisitor : Visitor
 		PrintVisitor v1;
 		e->e1->accept(v1);
 
-		ostr << v1.ostr.rdbuf();
+		ostr << v1.ostr.str();
 
 
 		ostr << ") * (";
@@ -123,7 +123,7 @@ struct PrintVisitor : Visitor
 		PrintVisitor v2;
 		e->e2->accept(v2);
 
-		ostr << v2.ostr.rdbuf();
+		ostr << v2.ostr.str();
 
 
 		ostr << ")";
@@ -137,14 +137,14 @@ struct PrintVisitor : Visitor
 		PrintVisitor v1;
 		e->e1->accept(v1);
 
-		ostr << v1.ostr.rdbuf();
+		ostr << v1.ostr.str();
 
 		ostr << ") - (";
 
 		PrintVisitor v2;
 		e->e2->accept(v2);
 
-		ostr << v2.ostr.rdbuf();
+		ostr << v2.ostr.str();
 
 		ostr << ")";
 	
