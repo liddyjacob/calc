@@ -4,6 +4,8 @@
 #include <iostream>
 #include <sstream>
 
+int eval(Expr* eptr);
+
 struct EvalVisitor : Visitor
 {
 	int ret;
@@ -150,4 +152,17 @@ struct PrintVisitor : Visitor
 
 };
 
+int eval(Expr* e){
+	EvalVisitor ev;
+	e->accept(ev);
+	return ev.ret;
+}
 
+std::ostream& operator<<(std::ostream& os, Expr* e){
+	std::stringstream ss;
+	PrintVisitor pv;
+	e->accept(pv);
+	os << pv.ostr.str();
+
+	return os;
+}
